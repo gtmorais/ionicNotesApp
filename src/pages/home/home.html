@@ -6,7 +6,7 @@
 </ion-header>
 
 <ion-content padding>
-  <ion-card *ngFor="let card of notes | async">
+  <ion-card *ngFor="let card of notes | async" (click)="showOptions(card, card.$title)">
     <ion-card-content>
       <ion-card-title>
         {{card.title}}
