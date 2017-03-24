@@ -6,21 +6,20 @@ import { AngularFire, FirebaseListObservable } from 'angularfire2'
   selector: 'page-home',
   templateUrl: 'home.html'
 })
+
 export class HomePage {
   notes: FirebaseListObservable<any>
+
   constructor(public navCtrl: NavController, public af: AngularFire,
     public alertCtrl: AlertController, 
-    public actionSheetCtrl: ActionSheetController
-  ) {
+    public actionSheetCtrl: ActionSheetController) {
     this.notes = af.database.list('/notes')
-
-
   }
 
    showOptions(itemId, value){
     let actionSheet = this.actionSheetCtrl.create(
       {
-        title:"What do you want to do?",
+        title:"Options:",
         buttons:[
           {
             text:"Delete",
@@ -29,12 +28,12 @@ export class HomePage {
               this.removeItem(itemId);
             }
           },
-          {
-            text:"Update",
-            handler:()=>{
-              this.updateItem(itemId, value);
-            }
-          },
+          // {
+          //   text:"Update",
+          //   handler:()=>{
+          //     this.updateItem(itemId, value);
+          //   }
+          // },
           {
             text:"Cancel",
             role: "cancel",
@@ -48,39 +47,38 @@ export class HomePage {
     actionSheet.present();
   }
 
-
   removeItem(itemId: string){
     console.log(itemId);
     this.notes.remove(itemId);
   }
 
-  updateItem(item, v){
-    console.log(item, v);
-    let prompt = this.alertCtrl.create({
-      title:"Update value",
-      message:"Update value for the item",
-      inputs:[
-        {
-          name:'value',
-          placeholder:"new value",
-          value:v
-        }
-      ],
-      buttons:[
-        {
-          text:'Cancel',
-          handler:data=>{
-            console.log("Cancel update");
-          }
-        },{
-          text:'Save',
-          handler:data=>{
-            console.log(data);
-            this.notes.update(item, data);
-          }
-        }
-      ]
-    });
-    prompt.present();
-  }
+  // updateItem(item, v){
+  //   console.log(item, v);
+  //   let prompt = this.alertCtrl.create({
+  //     title:"Update value",
+  //     message:"Update value for the item",
+  //     inputs:[
+  //       {
+  //         name:'value',
+  //         placeholder:"new value",
+  //         value:v
+  //       }
+  //     ],
+  //     buttons:[
+  //       {
+  //         text:'Cancel',
+  //         handler:data=>{
+  //           console.log("Cancel update");
+  //         }
+  //       },{
+  //         text:'Save',
+  //         handler:data=>{
+  //           console.log(data);
+  //           this.notes.update(item, data);
+  //         }
+  //       }
+  //     ]
+  //   });
+  //   prompt.present();
+  // }
 }

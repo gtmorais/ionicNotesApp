@@ -19,5 +19,4 @@ export class Data {
   addNote(note) {
     this.notes.next(note)
   }
-
 }
