@@ -1,11 +1,14 @@
 import { Component } from '@angular/core';
 import { NavController, AlertController, ActionSheetController } from 'ionic-angular';
 import { AngularFire, FirebaseListObservable } from 'angularfire2'
+import { SocialSharing } from '@ionic-native/social-sharing';
 import { NotePage } from "../notes/note";
+import { Alert } from 'ionic/ionic';
 
 @Component({
   selector: 'page-home',
-  templateUrl: 'home.html'
+  templateUrl: 'home.html',
+  providers: [SocialSharing]
 })
 
 export class HomePage {
@@ -13,7 +16,8 @@ export class HomePage {
 
   constructor(public navCtrl: NavController, public af: AngularFire,
     public alertCtrl: AlertController, 
-    public actionSheetCtrl: ActionSheetController) {
+    public actionSheetCtrl: ActionSheetController,
+    private socialSharing: SocialSharing) {
     this.notes = af.database.list('/notes')
   }
 
@@ -36,6 +40,12 @@ export class HomePage {
             }
           },
           {
+            text:"Share",
+            handler:()=>{
+              this.shareItem(itemId, value);
+            }
+          },
+          {
             text:"Cancel",
             role: "cancel",
             handler:()=>{
@@ -53,9 +63,23 @@ export class HomePage {
     this.notes.remove(itemId);
   }
 
-  updateItem(itemId, v){
+  updateItem(item, v){
       this.navCtrl.push(NotePage, {
-        param1: itemId
+        param1: item
     });
+  };
+
+   shareItem(item, v){
+          //Check if sharing via email is supported
+          this.socialSharing.canShareViaEmail().then(() => {
+            this.socialSharing.shareViaEmail(item.body, v, ['gtmorais@gmail.com']).then(() => {
+          // Success!
+        }).catch(() => {
+          alert("It was not possible to send email.");
+        });
+      }).catch(() => {
+        // Sharing via email is not possible
+        alert("It was not possible to share.");
+      });
   };
 }
