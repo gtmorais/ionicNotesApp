@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController, AlertController, ActionSheetController } from 'ionic-angular';
 import { AngularFire, FirebaseListObservable } from 'angularfire2'
+import { NotePage } from "../notes/note";
 
 @Component({
   selector: 'page-home',
@@ -28,12 +29,12 @@ export class HomePage {
               this.removeItem(itemId);
             }
           },
-          // {
-          //   text:"Update",
-          //   handler:()=>{
-          //     this.updateItem(itemId, value);
-          //   }
-          // },
+          {
+            text:"Update",
+            handler:()=>{
+              this.updateItem(itemId, value);
+            }
+          },
           {
             text:"Cancel",
             role: "cancel",
@@ -52,33 +53,9 @@ export class HomePage {
     this.notes.remove(itemId);
   }
 
-  // updateItem(item, v){
-  //   console.log(item, v);
-  //   let prompt = this.alertCtrl.create({
-  //     title:"Update value",
-  //     message:"Update value for the item",
-  //     inputs:[
-  //       {
-  //         name:'value',
-  //         placeholder:"new value",
-  //         value:v
-  //       }
-  //     ],
-  //     buttons:[
-  //       {
-  //         text:'Cancel',
-  //         handler:data=>{
-  //           console.log("Cancel update");
-  //         }
-  //       },{
-  //         text:'Save',
-  //         handler:data=>{
-  //           console.log(data);
-  //           this.notes.update(item, data);
-  //         }
-  //       }
-  //     ]
-  //   });
-  //   prompt.present();
-  // }
+  updateItem(itemId, v){
+      this.navCtrl.push(NotePage, {
+        param1: itemId
+    });
+  };
 }

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController} from 'ionic-angular';
+import { NavController, NavParams } from 'ionic-angular';
 import { AngularFire } from 'angularfire2';
 /*
   Generated class for the Note page.
@@ -11,8 +11,10 @@ class Note {
   title: string
   body: string
   id: string
-
-  constructor() {}
+  date: string
+  constructor() {
+    this.date = new Date().toDateString();
+  }
 }
 
 @Component({
@@ -21,12 +23,22 @@ class Note {
 })
 export class NotePage {
   note: Note = new Note()
-  constructor(public navCtrl: NavController, public af: AngularFire) {}
+  
+  constructor(public navCtrl: NavController, private navParams: NavParams, public af: AngularFire) {
+    var parameter1 = navParams.get('param1'); 
+    if (parameter1 != null && parameter1 != "")
+    {
+      this.note = parameter1;
+      this.note.id = parameter1.$key;
+    }
+  }
 
   submit() {
-    this.af.database.list('/notes').push(this.note)
+    if (this.note.id != undefined)
+        this.af.database.list('/notes').update(this.note.id, this.note)
+    else
+      this.af.database.list('/notes').push(this.note)
     this.note = new Note()
     this.navCtrl.parent.select(0)
   }
-
 }
