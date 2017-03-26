@@ -3,7 +3,7 @@ import { NavController, AlertController, ActionSheetController } from 'ionic-ang
 import { AngularFire, FirebaseListObservable } from 'angularfire2'
 import { SocialSharing } from '@ionic-native/social-sharing';
 import { NotePage } from "../notes/note";
-import { Alert } from 'ionic/ionic';
+//import { Alert } from 'ionic/ionic';
 
 @Component({
   selector: 'page-home',
@@ -28,6 +28,7 @@ export class HomePage {
         buttons:[
           {
             text:"Delete",
+            icon:"ios-trash",
             role:"destructive",
             handler:()=>{
               this.removeItem(itemId);
@@ -35,18 +36,21 @@ export class HomePage {
           },
           {
             text:"Update",
+            icon:"ios-redo",
             handler:()=>{
               this.updateItem(itemId, value);
             }
           },
           {
             text:"Share",
+            icon:"ios-share",
             handler:()=>{
               this.shareItem(itemId, value);
             }
           },
           {
             text:"Cancel",
+            icon:"ios-close",
             role: "cancel",
             handler:()=>{
               console.log("Cancel");
